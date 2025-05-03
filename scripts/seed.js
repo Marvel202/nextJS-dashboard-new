@@ -1,5 +1,6 @@
 require("dotenv").config();
-
+console.log("Database URL:", process.env.POSTGRES_URL);
+// ...existing code...
 const { db } = require("@vercel/postgres");
 const {
   invoices,
