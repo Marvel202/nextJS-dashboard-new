@@ -1,4 +1,5 @@
 // /app/api/auth/[...nextauth]/route.ts
+
 import NextAuth from 'next-auth';
 import { authConfig } from '../../../../auth.config';
 import Credentials from 'next-auth/providers/credentials';
@@ -9,7 +10,7 @@ import bcrypt from 'bcryptjs';
 
 async function getUser(email: string): Promise<User | undefined> {
   try {
-    const user = await sql<User>`SELECT * from users where email=${email}`; // Updated to lowercase 'users'
+    const user = await sql<User>`SELECT * from users where email=${email}`;
     return user.rows[0];
   } catch (error) {
     console.error('Failed to fetch user:', error);
@@ -17,7 +18,7 @@ async function getUser(email: string): Promise<User | undefined> {
   }
 }
 
-export const { auth: middleware } = NextAuth({
+export const { auth } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
@@ -42,4 +43,5 @@ export const { auth: middleware } = NextAuth({
   ],
 });
 
-export { middleware as GET, middleware as POST };
+export const GET = auth;
+export const POST = auth;
