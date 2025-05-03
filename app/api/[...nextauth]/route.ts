@@ -1,28 +1,23 @@
-'use client';
-
-export { signIn, signOut } from 'next-auth/react';
-
-/*
+// /app/api/auth/[...nextauth]/route.ts
 import NextAuth from 'next-auth';
+import { authConfig } from '../../../../auth.config';
 import Credentials from 'next-auth/providers/credentials';
-import { authConfig } from './auth.config';
 import { sql } from '@vercel/postgres';
 import { z } from 'zod';
 import type { User } from '@/app/lib/definitions';
 import bcrypt from 'bcryptjs';
 
-
 async function getUser(email: string): Promise<User | undefined> {
   try {
-    const user = await sql<User>`SELECT * from users where email=${email}`;
+    const user = await sql<User>`SELECT * from users where email=${email}`; // Updated to lowercase 'users'
     return user.rows[0];
   } catch (error) {
     console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');
   }
 }
- 
-export const { auth, signIn, signOut } = NextAuth({
+
+export const { auth: middleware } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
@@ -42,8 +37,9 @@ export const { auth, signIn, signOut } = NextAuth({
  
         console.log('Invalid credentials');
         return null;
-        }
+      },
     }),
   ],
-});*/
+});
 
+export { middleware as GET, middleware as POST };

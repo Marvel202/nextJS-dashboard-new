@@ -125,6 +125,7 @@ export async function deleteInvoice(id: string) {
   }
 }
 
+/*
   
 export async function authenticate(
   prevState: string | undefined,
@@ -137,5 +138,27 @@ export async function authenticate(
       return 'CredentialSignin';
     }
     throw error;
+  }
+}
+*/
+
+export async function authenticate(_prevState: string | undefined, formData: FormData) {
+  try {
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    const result = await signIn('credentials', {
+      email,
+      password,
+      redirect: false, // Don't redirect automatically; we'll handle it manually
+    });
+
+    if (result?.error) {
+      return 'CredentialSignin';
+    }
+
+    redirect('/dashboard');
+  } catch (error) {
+    return 'CredentialSignin';
   }
 }
