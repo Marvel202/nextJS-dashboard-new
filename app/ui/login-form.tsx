@@ -8,13 +8,15 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
-import { useFormState, useFormStatus } from 'react-dom';
+/* import { useFormState, useFormStatus } from 'react-dom'; */
+import { useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
 import { authenticate } from '@/app/lib/actions';
 
 export default function LoginForm() {
-  const [code, action] = useFormState(authenticate, undefined);
+  const [code, formAction] = useActionState(authenticate, undefined);
   return (
-    <form action={action} className="space-y-3">
+    <form action={formAction} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>
           Please log in to continue.
